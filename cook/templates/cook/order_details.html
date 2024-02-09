@@ -1,0 +1,54 @@
+{% extends 'cook/dashboard.html' %}
+
+{% block content %}
+ <header id="header" >
+     <ul>
+        <li><a class="nav-link" href="{% url 'dashboard' %}" style="font-size: 30px; color: white;">Home</a></li>
+     </ul>
+ </header>
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-sm-12 text-center mt-3">
+            <h1>Order ID: {{ order.pk }}</h1>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-12 com-sm-12 mt-5">
+            <h3>Customer Information:</h3>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 com-sm-12 mt-5">
+            <p><span style="font-weight: 400;">Name:</span> {{ order.name }}</p>
+            <p><span style="font-weight: 400;">Email:</span> {{ order.email }}</p>
+            <p><span style="font-weight: 400;">Address:</span> {{ order.address }}</p>
+            <p><span style="font-weight: 400;">Phone:</span> {{ order.phone_no }}</p>
+            <h3 class="font-weight-bold pt-4">Order Summary:</h3>
+            {% for item in order.orderitem_set.all %}
+                <p>Dish: {{item.menuItem.name}} <span class="pl-3">Price: {{item.menuItem.price|floatformat:2}}</span><span class="quantity"><p>Quantity: {{item.quantity}}</p></span></p>
+            {% endfor %}
+            <p class="font-weight-bold pt-4">Total: {{ price }}</p>
+        </div>
+        </div>
+
+        <div class="col-md-6 col-sm-12">
+            <h5>Shipping Information</h5>
+                {% if order.is_shipped %}
+                <p><i style="color: green;" class="fas fa-check"></i><span class="pl-2">Order Has Been Shipped!</span></p>
+                {% else %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-success">Ready for pickup!</button>
+                </form>
+                {% endif %}
+        </div>
+    </div>
+</div>
+    <footer id="footer" style="margin-top: 130px; clear: both;" >
+        &copy; 2022 Copyright:
+    </footer>
+{% endblock content %}

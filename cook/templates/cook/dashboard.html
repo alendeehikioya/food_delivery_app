@@ -1,0 +1,154 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+        #footer
+        {
+           background-color: brown;
+           height: 50px;
+        }
+        #header
+        {
+           background-color: brown;
+           position: relative;
+           height: 100px;
+           clear: both;
+        }
+         ul
+         {
+             margin-top:20px;
+             list-style: none;
+             padding:10px;
+             display: flex;
+
+        }
+
+        ul li
+        {
+             list-style: none;
+             margin: 0 20px;
+             margin-top:20px
+             transition: 0.5s;
+
+        }
+        ul li a
+        {
+             display: block;
+             position: relative;
+             text-decoration: none;
+             padding: 8px;
+             font-size: 30px;
+             font-family: sans-serif;
+             text-transform: uppercase
+             transition: 0.5s;
+        }
+
+        ul:hover li a
+        {
+             transform: scale(1.25);
+             opacity: .2;
+             filter: blur (5px);
+
+        }
+
+        ul li a:hover
+        {
+             transform: scale(1);
+             opacity: 1;
+             filter: blur (2);
+        }
+
+        ul li a:before
+        {
+             content: '';
+             position: absolute;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 100%;
+             background: #ff9933
+             transition: transform 0.5s;
+             transform-origin: right;
+             transform: scaleX(0);
+             z-index: -1;
+        }
+
+
+        ul li a:hover:before
+        {
+             transition: transform 0.5s;
+             transform-origin: left;
+             transform: scaleX(1);
+             background: #ff9933
+        }
+
+        </style>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+
+
+
+  </head>
+    <body>
+
+    </body>
+
+
+{% block content %}
+ <header id="header" >
+     <ul>
+        <li><a class="nav-link" href="{% url 'nav' %}" style="font-size: 30px; color: white;">Home</a></li>
+     </ul>
+ </header>
+
+
+    <div class="container">
+        <div class="row justify-content-center mt-3">
+            <div class="card col-md-5 mr-3">
+                <h4 class="text-center pt-2">Today's Total Revenue</h4>
+                <h1 class="text-center" style="color: green;">{{ total_revenue }}</h1>
+            </div>
+
+            <div class="card col-md-5 mr-3">
+                <h4 class="text-center pt-2">Today's Total Orders</h4>
+                <h1 class="text-center" style="color: #ad0003;">{{ total_orders }}</h1>
+            </div>
+        </div>
+
+        <div class="row justify-content-center" >
+            <div class="col-md-12 mt-5">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Order ID</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone_no</th>
+                            <th scope="col">Details</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <th scope="row">{{ order.pk }}</th>
+                            <td>{{ order.get_cart_total|floatformat:2 }}</td>
+                            <td>{{ order.name }}</td>
+                            <td>{{ order.email }}</td>
+                             <td>{{ order.phone_no }}</td>
+
+                            <td><a href="{% url 'order_details' order.pk %}"><i style="background-colour: brown;" class="btn btn-danger"></i></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+      <footer id="footer" style="position:bottom; clear: both; margin-top: 300px;" >
+        &copy; 2022 Copyright:
+    </footer>
+{% endblock content %}
